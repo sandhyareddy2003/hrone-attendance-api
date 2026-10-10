@@ -100,7 +100,9 @@ def list_employees(department: Optional[str] = None, page: int = 1, page_size: i
 def punch_in(body: PunchInIn):
     emp = db.employees.find_one({"emp_code": body.emp_code})
     if emp is None:raise HTTPException(404, "employee not found")
-    ts = datetime.fromtimestamp(body.punched_at / 1000) if body.punched_at else datetime.now()
+    if body.punched_at is None:ts = datetime.now(IST).replace(microsecond=0)
+    else:
+        ts = datetime.fromtimestamp(body.punched_at // 1000, tz=IST)
     d = ts.date().isoformat()
     if db.attendance_logs.find_one({"emp_code": body.emp_code, "date": d}):
         raise HTTPException(409, "already punched in for this date")
