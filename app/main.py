@@ -10,7 +10,7 @@ openapi.yaml for the contract and DATA_MODEL.md for what is stored in MongoDB.
 """
 import os
 from datetime import datetime, timedelta, timezone
-from typing import Optional
+from typing import Literal, Optional
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -63,7 +63,7 @@ class EmployeeIn(BaseModel):
 class PunchInIn(BaseModel):
     emp_code: str
     punched_at: Optional[int] = Field(default=None, ge=100000000000)
-    status: str = "PRESENT"
+    status: Literal["PRESENT", "WFH", "ON_DUTY"] = "PRESENT"
 
 
 # --------------------------------------------------------------------------- #
