@@ -14,7 +14,7 @@ from typing import Optional
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pymongo import MongoClient
 
 load_dotenv()
@@ -62,7 +62,7 @@ class EmployeeIn(BaseModel):
 
 class PunchInIn(BaseModel):
     emp_code: str
-    punched_at: Optional[int] = None
+    punched_at: Optional[int] = Field(default=None, ge=100000000000)
     status: str = "PRESENT"
 
 
